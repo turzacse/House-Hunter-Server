@@ -152,6 +152,24 @@ async function startServer() {
       const result = await cursor.toArray();
       res.send(result);
     })
+    app.get('/bookings/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+
+      const options = {
+        projection: { name: 1, email: 1, phone: 1, address: 1, img: 1 },
+      };
+
+      const result = await bookingCollection.findOne(query);
+      res.send(result);
+    })
+
+    app.delete('/bookings/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await bookingCollection.deleteOne(query);
+      res.send(result);
+    })
 
     // Start the server
     app.listen(PORT, () => {
