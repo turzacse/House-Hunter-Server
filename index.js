@@ -138,6 +138,30 @@ async function startServer() {
       res.send(result);
     })
 
+    app.put('/rooms/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) }
+      const options = { upset: true };
+      const updateInfo = req.body;
+      const room = {
+        $set: {
+          name: updateInfo.name,
+          address: updateInfo.address,
+          city: updateInfo.city,
+          bedroom: updateInfo.bedroom,
+          bathroom: updateInfo.bathroom,
+          size: updateInfo.size,
+          available: updateInfo.available,
+          rent: updateInfo.rent,
+          phone: updateInfo.phone,
+          descriptions: updateInfo.descriptions,
+        }
+      }
+      const result = await roomCollection.updateOne(filter, room, options);
+      res.send(result);
+    })
+
+
 
     // basic API endpoint 
     const bookingCollection = client.db('House-Hunter').collection('bookings');
